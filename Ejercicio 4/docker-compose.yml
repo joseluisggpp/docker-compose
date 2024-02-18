@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mi-mysql #--name mi-mysql
+    networks:
+      - mi-mysql-red # --net mi-mysql-red
+    volumes:
+      - mi-mysql-vol:/var/lib/mysql # --mount source=mi-mysql-vol,target=/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: passwd
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - 8080:80 # -p 8080:80
+    networks:
+      - mi-mysql-red # --net mi-mysql-red
+    links:
+      - mysql # es lo mismo a -link mi-mysql
+    environment: # Credenciales del mysql
+      PMA_HOST: mysql
+
+networks:
+  mi-mysql-red:
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16 # --subnet 172.25.0.0/16
+volumes:
+  mi-mysql-vol: # docker volume create --name mi-mysql-vol

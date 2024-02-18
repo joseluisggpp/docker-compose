@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mi-mongo #--name mi-mongo
+    networks:
+      mi-red: # --net mi-red
+    volumes:
+      - mi-volumen:/data/db # --mount source=mi-volumen,target=/data/db
+  mongo-express:
+    image: mongo-express
+    container_name: mi-mongo-express
+    ports:
+      - 8081:8081 # -p 8081:8081
+    networks:
+      - mi-red # --net mi-red
+    environment: # Credenciales de mongo
+      ME_CONFIG_MONGODB_SERVER: mi-mongo
+
+networks:
+  mi-red: # docker network create --name mi-red
+volumes:
+  mi-volumen: # docker volume create --name mi-volumen
